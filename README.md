@@ -1,168 +1,193 @@
-# Student-Portal-Management-
-# Vehicle Management System 🚗
+# Student Portal Management
 
-A REST API built with Spring Boot to manage vehicle records. The application supports CRUD operations, stores data in MySQL, and provides interactive API documentation through Swagger UI.
+A Spring Boot REST API for managing student records using MySQL. The application follows a layered architecture that separates request handling, business logic, and database operations.
 
-## Technologies Used
+## Technology Stack
 
-- Java
-- Spring Boot
-- Spring Web
-- Spring Data JPA
+- Java 25
+- Spring Boot 4.1.1
+- Spring Web MVC
+- Spring Data JPA / Hibernate
 - MySQL
-- Swagger UI / Springdoc OpenAPI
 - Maven
+- Lombok
+- Spring Boot DevTools
+- Postman
 
 ## Features
 
-- Add a new vehicle
-- View all vehicles
-- Find a vehicle by ID
-- Update vehicle details
-- Delete a vehicle
-- Test API endpoints using Swagger UI
+- Create a student record
+- Retrieve all students
+- Retrieve a student by ID
+- Find a student by first name
+- Store student records in MySQL
 
-## Vehicle Fields
+## Student Fields
 
-| Field | Description |
-|-------|-------------|
-| vehicleId | Unique vehicle identifier |
-| vehicleNumber | Vehicle registration number |
-| brand | Vehicle manufacturer |
-| model | Vehicle model |
-| vehicleType | Vehicle category |
-| fuelType | Fuel used by the vehicle |
-| color | Vehicle color |
-| price | Vehicle price |
-| ownerName | Owner’s name |
-| year | Manufacturing year |
+| Field | Java Type | Description |
+|---|---|---|
+| Sid | Integer | Student identifier |
+| FirstName | String | First name |
+| LastName | String | Last name |
+| Email | String | Email address |
+| Dept | String | Department |
+| Salary | double | Salary value |
+| City | String | City |
 
-## Project Architecture
+## Project Structure
 
-The application follows a layered architecture:
+```text
+src/main/
+├── java/com/karthikeya/StudentPortal/
+│   ├── StudentPortalApplication.java
+│   ├── Controller/
+│   │   └── StudentController.java
+│   ├── Service/
+│   │   ├── StudentService.java
+│   │   └── StudentServiceImpl.java
+│   ├── Repo/
+│   │   └── StudentRepository.java
+│   └── model/
+│       └── Student.java
+└── resources/
+    └── application.properties
+```
 
-- **Controller:** Handles HTTP requests and responses.
-- **Service:** Contains business logic.
-- **Repository:** Performs database operations using Spring Data JPA.
-- **Model:** Defines the vehicle entity and its database mapping.
+### Architecture
+
+| Layer | Responsibility |
+|---|---|
+| Controller | Handles HTTP requests and responses |
+| Service | Implements student management operations |
+| Repository | Performs database operations using Spring Data JPA |
+| Model | Maps student data to a database table |
 
 ## Prerequisites
 
-- A JDK compatible with the project's Spring Boot version
+- JDK 25
 - MySQL
-- Maven or the included Maven Wrapper
-- An IDE such as Eclipse, IntelliJ IDEA, or VS Code
+- Maven
+- Eclipse, IntelliJ IDEA, or another Java IDE
+- Postman for API testing
 
-## Setup and Installation
+## Installation and Setup
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
-Replace the placeholder with your repository URL:
+Replace `<your-repository-url>` with the repository's clone URL:
 
 ```bash
 git clone <your-repository-url>
-cd <your-project-folder>
+cd Student-Portal-Management-
 ```
 
-### 2. Create the database
+### 2. Create the Database
 
-Run the following SQL in MySQL:
+Execute the following SQL in MySQL:
 
 ```sql
-CREATE DATABASE vehicle_db;
+CREATE DATABASE IF NOT EXISTS Karthik1;
 ```
 
-### 3. Configure the application
+### 3. Configure the Application
 
 Update `src/main/resources/application.properties`:
 
 ```properties
-spring.application.name=VehicleManagementSystem
-
+spring.application.name=StudentPortal
 server.port=9988
 
-spring.datasource.url=jdbc:mysql://localhost:3306/vehicle_db
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/Karthik1
 spring.datasource.username=${DB_USERNAME}
 spring.datasource.password=${DB_PASSWORD}
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 ```
 
-Set the `DB_USERNAME` and `DB_PASSWORD` environment variables to your MySQL credentials before starting the application.
+Set `DB_USERNAME` and `DB_PASSWORD` to your MySQL credentials in your terminal environment or IDE run configuration.
 
-### 4. Run the application
-
-Using Maven:
+### 4. Run the Application
 
 ```bash
 mvn spring-boot:run
 ```
 
-Alternatively, run the main class annotated with `@SpringBootApplication` from your IDE.
+Alternatively, run `StudentPortalApplication.java` from your IDE.
 
-## Swagger UI
+**Application base URL:** `http://localhost:9988`
 
-With the application running, open:
+> MySQL uses port `3306`. Send HTTP API requests to the application on port `9988`.
 
-http://localhost:9988/swagger-ui/index.html
+## API Usage
 
-Swagger UI allows you to inspect endpoint documentation, enter request data, execute requests, and view responses.
-
-OpenAPI JSON is available at:
-
-http://localhost:9988/v3/api-docs
-
-> These are the default Springdoc paths. Adjust them if your application uses custom settings.
-
-## API Endpoints
-
-The following is a suggested endpoint structure. Update these paths to match the mappings in your controller.
+### Create a Student
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/vehicles` | Add a vehicle |
-| GET | `/api/vehicles` | Retrieve all vehicles |
-| GET | `/api/vehicles/{id}` | Retrieve a vehicle by ID |
-| PUT | `/api/vehicles/{id}` | Update a vehicle |
-| DELETE | `/api/vehicles/{id}` | Delete a vehicle |
+|---|---|---|
+| POST | `/Student/ss` | Create a student record |
 
-## Sample Request Body
+**Request URL:**
 
-Use this JSON when adding a vehicle. If `vehicleId` is generated by the database, omit it from the create request.
+```text
+http://localhost:9988/Student/ss
+```
+
+**Request header:**
+
+```text
+Content-Type: application/json
+```
+
+**Sample request body:**
 
 ```json
 {
-  "vehicleNumber": "AP39AB1234",
-  "brand": "Toyota",
-  "model": "Fortuner",
-  "vehicleType": "SUV",
-  "fuelType": "Diesel",
-  "color": "Black",
-  "price": 4500000,
-  "ownerName": "Karthik",
-  "year": 2025
+  "firstName": "Karthik",
+  "lastName": "Kondru",
+  "email": "karthik@example.com",
+  "dept": "CSE",
+  "salary": 30000.0,
+  "city": "Gudlavalleru"
 }
 ```
 
-## Testing with Swagger UI
+> Match JSON property names to your entity's getters, setters, or Jackson annotations. Omit the student ID when it is generated automatically.
 
-1. Start MySQL and the Spring Boot application.
-2. Open Swagger UI.
-3. Expand the required endpoint.
-4. Click **Try it out**.
-5. Enter the required ID or JSON request body.
-6. Click **Execute**.
-7. Check the response status and body.
+For retrieval operations, use the exact paths declared in `StudentController`. Combine any class-level `@RequestMapping` with the method-level mapping.
+
+## Testing with Postman
+
+1. Start MySQL.
+2. Run the Spring Boot application.
+3. Create a new request in Postman.
+4. Select `POST` and enter the create endpoint URL.
+5. Select **Body → raw → JSON**.
+6. Paste the sample request body.
+7. Click **Send** and inspect the response.
+8. Use your retrieval endpoints to verify the saved record.
+
+## Troubleshooting
+
+| Issue | Solution |
+|---|---|
+| Service bean not found | Annotate the service implementation with `@Service` and ensure component scanning includes it |
+| HTTP 404 | Check `@RestController`, the HTTP method, and controller mappings |
+| Parse error on port 3306 | Send API requests to port `9988` |
+| Database connection failure | Check MySQL, database name, and credentials |
+| Port 9988 already in use | Stop the conflicting process or change `server.port` |
 
 ## Future Enhancements
 
-- Input validation and centralized exception handling
-- Search by vehicle number, brand, or owner
+- Update and delete student records
+- Input validation
+- Centralized exception handling
+- Swagger UI / OpenAPI documentation
 - Pagination and sorting
-- User authentication and role-based authorization
+- Department-based filtering
 - React frontend
+- Authentication and role-based authorization
 
 ## Author
 
